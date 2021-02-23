@@ -150,6 +150,12 @@ def deleteOldLevel():
         value5.destroy()
 
 def on_on_overlap(sprite, otherSprite):
+    otherSprite.destroy()
+    music.power_down.play(255)
+    info.change_life_by(-1)
+sprites.on_overlap(SpriteKind.player, SpriteKind.projectile, on_on_overlap)
+
+def on_on_overlap2(sprite, otherSprite):
     global level
     if len(sprites.all_of_kind(SpriteKind.food)) == 0:
         if level == 2:
@@ -159,13 +165,14 @@ def on_on_overlap(sprite, otherSprite):
             puppers.set_position(30, 80)
             chooseLevel()
             music.play_melody("A B A G B C5 - - ", 200)
-sprites.on_overlap(SpriteKind.player, SpriteKind.door, on_on_overlap)
+sprites.on_overlap(SpriteKind.player, SpriteKind.door, on_on_overlap2)
 
-def on_on_overlap2(sprite, otherSprite):
+def on_on_overlap3(sprite, otherSprite):
     music.ba_ding.play()
     otherSprite.destroy()
-sprites.on_overlap(SpriteKind.player, SpriteKind.food, on_on_overlap2)
+sprites.on_overlap(SpriteKind.player, SpriteKind.food, on_on_overlap3)
 
+poop: Sprite = None
 portal: Sprite = None
 level = 0
 list2: List[Image] = []
@@ -243,30 +250,45 @@ list2 = [img("""
 level = 0
 chooseLevel()
 
-
 def on_update_interval():
+    global poop
     poop = sprites.create_projectile_from_side(img("""
-    . . . . . . . . . . . . . . . .
-    . . . . . . . . . . . . . . . .
-    . . . . . . . . . . . . . . . .
-    . . . . . . . . . e e . . . . .
-    . . . . . . . . e e . . . . . .
-    . . . . . . . e e e . . . . . .
-    . . . . . . . e e e e . . . . .
-    . . . . . . e e e e e e . . . .
-    . . . . . e e e e e e e e . . .
-    . . . . e e e e e e e e e e . .
-    . . . e e e f e e f e e e e e .
-    . . . e e e e e e e e e e e e .
-    . . e e e e e e e e e e e e e .
-    . . e e e f f e e e f f e e e .
-    . . e e e e f f f f f e e e e .
-    . . . e e e e e e e e e e e . .
-"""), randint(-50,50), randint(-50,50))
+            . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . e e . . . . . 
+                    . . . . . . . . e e . . . . . . 
+                    . . . . . . . e e e . . . . . . 
+                    . . . . . . . e e e e . . . . . 
+                    . . . . . . e e e e e e . . . . 
+                    . . . . . e e e e e e e e . . . 
+                    . . . . e e e e e e e e e e . . 
+                    . . . e e e f e e f e e e e e . 
+                    . . . e e e e e e e e e e e e . 
+                    . . e e e e e e e e e e e e e . 
+                    . . e e e f f e e e f f e e e . 
+                    . . e e e e f f f f f e e e e . 
+                    . . . e e e e e e e e e e e . .
+        """),
+        randint(-50, 50),
+        randint(-50, 50))
 game.on_update_interval(3000, on_update_interval)
 
-def on_overlap(sprite, otherSprite):
-    otherSprite.destroy()
-    music.power_down.play(255)
-    info.change_life_by(-1)
-sprites.on_overlap(SpriteKind.player, SpriteKind.projectile, on_overlap)
+my_sprite = sprites.create(img("""
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+"""))

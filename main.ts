@@ -1,6 +1,25 @@
 namespace SpriteKind {
     export const door = SpriteKind.create()
 }
+controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
+    dodging = true
+    puppers.setImage(img`
+        . 2 2 2 2 2 2 2 2 2 2 2 2 2 2 . 
+        2 2 5 5 5 e . . e 5 5 5 4 . 2 2 
+        2 5 5 5 5 5 e e 5 5 5 5 5 4 . 2 
+        2 5 5 4 4 5 5 5 5 4 4 5 5 4 . 2 
+        2 5 4 4 5 5 5 5 5 5 4 4 5 e . 2 
+        2 e e 5 5 5 5 5 5 5 5 e e . . 2 
+        2 . e 5 f 5 5 5 5 f 5 e . . . 2 
+        2 . f 5 5 5 4 4 5 5 5 f . . f 2 
+        2 . f 4 5 5 f f 5 5 6 f . f 5 2 
+        2 . . f 6 6 6 6 6 6 4 4 f 5 5 2 
+        2 . . f 4 5 5 5 5 5 5 4 4 5 f 2 
+        2 . . f 5 5 5 5 5 4 5 5 f f . 2 
+        2 2 . f 5 f f f 5 f f 5 f . 2 2 
+        . 2 2 2 2 2 2 2 2 2 2 2 2 2 2 . 
+        `)
+})
 function chooseLevel () {
     if (level == 0) {
         scene.setTileMap(list2[level])
@@ -146,9 +165,14 @@ function deleteOldLevel () {
     }
 }
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, otherSprite) {
-    otherSprite.destroy()
-    music.powerDown.play(255)
+    if (dodging == false) {
+        otherSprite.destroy()
+        music.powerDown.play(255)
 info.changeLifeBy(-1)
+    } else {
+        otherSprite.destroy()
+        music.zapped.play()
+    }
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.door, function (sprite, otherSprite) {
     if (sprites.allOfKind(SpriteKind.Food).length == 0) {
@@ -162,12 +186,32 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.door, function (sprite, otherSpr
         }
     }
 })
+controller.B.onEvent(ControllerButtonEvent.Released, function () {
+    dodging = false
+    puppers.setImage(img`
+        . . 4 4 4 . . . . 4 4 4 . . . . 
+        . 4 5 5 5 e . . e 5 5 5 4 . . . 
+        4 5 5 5 5 5 e e 5 5 5 5 5 4 . . 
+        4 5 5 4 4 5 5 5 5 4 4 5 5 4 . . 
+        e 5 4 4 5 5 5 5 5 5 4 4 5 e . . 
+        . e e 5 5 5 5 5 5 5 5 e e . . . 
+        . . e 5 f 5 5 5 5 f 5 e . . . . 
+        . . f 5 5 5 4 4 5 5 5 f . . f f 
+        . . f 4 5 5 f f 5 5 6 f . f 5 f 
+        . . . f 6 6 6 6 6 6 4 4 f 5 5 f 
+        . . . f 4 5 5 5 5 5 5 4 4 5 f . 
+        . . . f 5 5 5 5 5 4 5 5 f f . . 
+        . . . f 5 f f f 5 f f 5 f . . . 
+        . . . f f . . f f . . f f . . . 
+        `)
+})
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
     music.baDing.play()
     otherSprite.destroy()
 })
 let poop: Sprite = null
 let portal: Sprite = null
+let dodging = false
 let level = 0
 let list2: Image[] = []
 let puppers: Sprite = null

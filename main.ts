@@ -133,7 +133,7 @@ function createLevel () {
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             `, false)
-        portal = sprites.create(img`
+        ham = sprites.create(img`
             . . . . . . 2 2 2 2 . . . . . . 
             . . . . 2 2 3 3 3 3 2 e . . . . 
             . . . 2 3 d 1 1 d d 3 2 e . . . 
@@ -151,11 +151,11 @@ function createLevel () {
             . . e 3 3 3 3 3 3 b e e e e . . 
             . . . e e e e e e e e e e . . . 
             `, SpriteKind.Food)
-        scene.place(value4, portal)
+        scene.place(value4, ham)
     }
 }
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (puppers.isHittingTile(CollisionDirection.Bottom)) {
+    if (puppers.isHittingTile(CollisionDirection.Bottom) && dodging == false) {
         puppers.vy = -300
     }
 })
@@ -210,6 +210,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSpr
     otherSprite.destroy()
 })
 let poop: Sprite = null
+let ham: Sprite = null
 let portal: Sprite = null
 let dodging = false
 let level = 0

@@ -28,6 +28,10 @@ function chooseLevel () {
         deleteOldLevel()
         scene.setTileMap(list2[level])
         createLevel()
+    } else if (level == 2) {
+        deleteOldLevel()
+        scene.setTileMap(list2[level])
+        createLevel()
     } else {
         deleteOldLevel()
         scene.setTileMap(list2[level])
@@ -176,7 +180,7 @@ info.changeLifeBy(-1)
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.door, function (sprite, otherSprite) {
     if (sprites.allOfKind(SpriteKind.Food).length == 0) {
-        if (level == 2) {
+        if (level == 3) {
             game.over(true)
         } else {
             level += 1
@@ -282,6 +286,21 @@ list2 = [img`
     .......222222f222222....f.
     f...f222222222222222222222
     22222222222222222222222222
+    `, img`
+    f...f............f........
+    .................5........
+    ..........................
+    ..........................
+    ..........................
+    ...........f..............
+    ..55......2222.......55f..
+    .........222222.....5555..
+    ........22222222555555555.
+    ........222222222.........
+    .......2222222222.8.......
+    .......2222222222.......f.
+    22222222222222222.....2222
+    22222222222222222.....2222
     `]
 level = 0
 chooseLevel()
